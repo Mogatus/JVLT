@@ -9,7 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kardatech.jvlt.ui.AppScreen
+import com.kardatech.jvlt.ui.VocabularyManagementScreen
 import com.kardatech.jvlt.ui.VocabularyScreen
+import com.kardatech.jvlt.ui.VocabularyViewModel
 import com.kardatech.jvlt.ui.theme.JVLTTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,9 +22,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JVLTTheme {
+                val viewModel: VocabularyViewModel = viewModel(factory = VocabularyViewModel.Factory)
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        VocabularyScreen()
+                        when (viewModel.currentScreen) {
+                            AppScreen.LEARNING -> {
+                                VocabularyScreen(
+                                    viewModel = viewModel,
+                                ) { viewModel.currentScreen = AppScreen.MANAGEMENT }
+                            }
+
+                            AppScreen.MANAGEMENT -> {
+                                VocabularyManagementScreen(
+                                    viewModel = viewModel,
+                                ) { viewModel.currentScreen = AppScreen.LEARNING }
+                            }
+                        }
                     }
                 }
             }

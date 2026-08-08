@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [VocabularyItem::class], version = 1, exportSchema = false)
+@Database(entities = [VocabularyItem::class], version = 5, exportSchema = false)
 abstract class VocabularyDatabase : RoomDatabase() {
     abstract fun vocabularyDao(): VocabularyDao
 
@@ -16,6 +16,7 @@ abstract class VocabularyDatabase : RoomDatabase() {
         fun getDatabase(context: Context): VocabularyDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, VocabularyDatabase::class.java, "vocabulary_database")
+                    .fallbackToDestructiveMigration(dropAllTables = true)
                     .build()
                     .also { Instance = it }
             }

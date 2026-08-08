@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">JVLT</string>
+    <string name="manage">Manage</string>
+    <string name="switch_language">Switch Language:</string>
+    <string name="translation_label">Translation</string>
+    <string name="check_button">Check</string>
+    <string name="stage_label">Stage: %1$d/7</string>
+    <string name="phase_label">Phase: %1$d</string>
+    <string name="no_vocab_language">No vocabulary found for this language.</string>
+    <string name="session_statistics">Session Statistics</string>
+    <string name="learned_count">Learned: %1$d</string>
+    <string name="correct_count">Correct: %1$d</string>
+    <string name="incorrect_count">Incorrect: %1$d</string>
+    <string name="total_phase_statistics">Total Phase Statistics</string>
+    <string name="phase_stat_item">Phase %1$d: %2$d words</string>
+
+    <string name="manage_language_title">Manage %1$s</string>
+    <string name="back_button">Back</string>
+    <string name="import_csv">Import CSV</string>
+    <string name="add_word">Add Word</string>
+    <string name="no_vocab_for_language">No vocabulary found for %1$s.</string>
+    <string name="delete_button">Delete</string>
+    <string name="item_stat_overline">Stage: %1$d | Phase: %2$d</string>
+
+    <string name="add_new_word_title">Add New Word</string>
+    <string name="word_label">Word</string>
+    <string name="add_button">Add</string>
+    <string name="cancel_button">Cancel</string>
 </resources>

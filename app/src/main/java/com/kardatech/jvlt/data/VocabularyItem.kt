@@ -1,12 +1,18 @@
 package com.kardatech.jvlt.data
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "vocabulary")
+@Entity(
+    tableName = "vocabulary",
+    indices = [Index(value = ["word", "language"], unique = true)]
+)
 data class VocabularyItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val word: String,
     val translation: String,
-    val stage: Int = 1
+    val language: String,
+    val stage: Int = 1,
+    val phase: Int = 0
 )
