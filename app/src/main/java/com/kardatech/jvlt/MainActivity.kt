@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            JVLTTheme {
+            JVLTTheme(dynamicColor = false) {
                 val viewModel: VocabularyViewModel = viewModel(factory = VocabularyViewModel.Factory)
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
