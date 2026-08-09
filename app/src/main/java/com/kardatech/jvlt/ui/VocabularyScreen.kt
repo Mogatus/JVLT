@@ -10,7 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.FlightTakeoff
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kardatech.jvlt.R
 import com.kardatech.jvlt.data.PhaseStat
+import com.kardatech.jvlt.data.VocabularyItem
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -48,7 +49,7 @@ fun VocabularyScreen(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.Default.Language,
+                            imageVector = Icons.Default.FlightTakeoff,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
                         )
@@ -145,8 +146,7 @@ fun VocabularyScreen(
                 if (currentWord != null) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         WordCard(
-                            word = currentWord.word,
-                            translation = currentWord.translation,
+                            item = currentWord,
                             isTranslationVisible = viewModel.isTranslationVisible,
                             onSwipeRight = { viewModel.onSwipeRight() },
                         ) { viewModel.onSwipeLeft() }
@@ -228,6 +228,7 @@ fun VocabularyScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun StatisticsSection(
     sessionTotal: Int,
@@ -326,8 +327,7 @@ fun StatItem(label: String, color: Color, icon: androidx.compose.ui.graphics.vec
 
 @Composable
 fun WordCard(
-    word: String,
-    translation: String,
+    item: VocabularyItem,
     isTranslationVisible: Boolean,
     onSwipeRight: () -> Unit,
     onSwipeLeft: () -> Unit,
@@ -339,7 +339,7 @@ fun WordCard(
         modifier = Modifier
             .size(width = 320.dp, height = 220.dp)
             .offset { IntOffset(x = offsetX.value.roundToInt(), y = 0) }
-            .pointerInput(key1 = word) {
+            .pointerInput(key1 = item.word) {
                 detectHorizontalDragGestures(
                     onDragEnd = {
                         scope.launch {
@@ -378,16 +378,43 @@ fun WordCard(
             contentAlignment = Alignment.Center,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                if (item.wordType.isNotEmpty()) {
+                    Text(
+                        text = item.wordType.uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp,
+                    )
+                    Spacer(modifier = Modifier.height(height = 4.dp))
+                }
+                
                 Text(
-                    text = word,
+                    text = item.word,
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.ExtraBold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
+                
+                if (item.category.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(height = 4.dp))
+                    Surface(
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        shape = RoundedCornerShape(size = 8.dp),
+                    ) {
+                        Text(
+                            text = item.category,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        )
+                    }
+                }
+
                 if (isTranslationVisible) {
                     Spacer(modifier = Modifier.height(height = 12.dp))
                     Text(
-                        text = translation,
+                        text = item.translation,
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium,

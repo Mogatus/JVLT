@@ -32,22 +32,22 @@ enum class AppScreen {
 
 class VocabularyViewModel(private val repository: VocabularyRepository) : ViewModel() {
 
-    var currentScreen by mutableStateOf(AppScreen.LEARNING)
+    var currentScreen by mutableStateOf(value = AppScreen.LEARNING)
 
-    var currentWord by mutableStateOf<VocabularyItem?>(null)
+    var currentWord by mutableStateOf<VocabularyItem?>(value = null)
         private set
 
     var userTranslation by mutableStateOf(value = "")
     var isTranslationVisible by mutableStateOf(value = false)
 
-    var currentLanguage by mutableStateOf("English")
+    var currentLanguage by mutableStateOf(value = "English")
         private set
 
-    var sessionTotal by mutableIntStateOf(0)
+    var sessionTotal by mutableIntStateOf(value = 0)
         private set
-    var sessionCorrect by mutableIntStateOf(0)
+    var sessionCorrect by mutableIntStateOf(value = 0)
         private set
-    var sessionIncorrect by mutableIntStateOf(0)
+    var sessionIncorrect by mutableIntStateOf(value = 0)
         private set
 
     val availableLanguages: StateFlow<List<String>> = repository.getLanguagesStream()
@@ -78,6 +78,18 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
             initialValue = emptyList(),
         )
+
+    val wordTypes = listOf(
+        "Noun",
+        "Verb",
+        "Adjective",
+        "Adverb",
+        "Pronoun",
+        "Preposition",
+        "Conjunction",
+        "Phrase",
+        "Other",
+    )
 
     init {
         loadRandomWord()
@@ -111,11 +123,11 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
 
     private suspend fun seedInitialData() {
         val initialWords = listOf(
-            VocabularyItem(word = "Apple", translation = "Apfel", language = "English"),
-            VocabularyItem(word = "House", translation = "Haus", language = "English"),
-            VocabularyItem(word = "Car", translation = "Auto", language = "English"),
-            VocabularyItem(word = "Gato", translation = "Katze", language = "Spanish"),
-            VocabularyItem(word = "Perro", translation = "Hund", language = "Spanish"),
+            VocabularyItem(word = "Apple", translation = "Apfel", language = "English", wordType = "Noun"),
+            VocabularyItem(word = "House", translation = "Haus", language = "English", wordType = "Noun"),
+            VocabularyItem(word = "Car", translation = "Auto", language = "English", wordType = "Noun"),
+            VocabularyItem(word = "Gato", translation = "Katze", language = "Spanish", wordType = "Noun"),
+            VocabularyItem(word = "Perro", translation = "Hund", language = "Spanish", wordType = "Noun"),
         )
         initialWords.forEach { repository.insertItem(it) }
         loadRandomWord()
@@ -159,17 +171,28 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
         }
     }
 
-    fun addWord(word: String, translation: String) {
+    fun addWord(word: String, translation: String, category: String, wordType: String) {
         viewModelScope.launch {
             repository.insertItem(
                 VocabularyItem(
                     word = word,
                     translation = translation,
-                    language = currentLanguage
+                    language = currentLanguage,
+                    category = category,
+                    wordType = wordType,
                 )
             )
             if (currentWord == null) {
                 loadRandomWord()
+            }
+        }
+    }
+
+    fun updateWord(item: VocabularyItem) {
+        viewModelScope.launch {
+            repository.updateItem(item)
+            if (currentWord?.id == item.id) {
+                currentWord = item
             }
         }
     }
@@ -186,6 +209,8 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
                                 val word = parts[0].trim()
                                 val translation = parts[1].trim()
                                 val language = parts[2].trim()
+                                val category = if (parts.size >= 4) parts[3].trim() else ""
+                                val wordType = if (parts.size >= 5) parts[4].trim() else "Other"
                                 
                                 if (word.isNotEmpty() && translation.isNotEmpty() && language.isNotEmpty()) {
                                     val existing = repository.getItemByWordAndLanguage(word, language)
@@ -194,7 +219,9 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
                                             VocabularyItem(
                                                 word = word,
                                                 translation = translation,
-                                                language = language
+                                                language = language,
+                                                category = category,
+                                                wordType = wordType,
                                             )
                                         )
                                     }

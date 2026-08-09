@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JVLT</string>
+    <string name="app_name">VocalJet</string>
     <string name="manage">Manage</string>
     <string name="switch_language">Switch Language:</string>
     <string name="translation_label">Translation</string>
@@ -24,6 +24,11 @@
 
     <string name="add_new_word_title">Add New Word</string>
     <string name="word_label">Word</string>
+    <string name="category_label">Category (optional)</string>
+    <string name="category_prefix">Category: %1$s</string>
+    <string name="word_type_label">Word Type</string>
     <string name="add_button">Add</string>
+    <string name="save_button">Save</string>
     <string name="cancel_button">Cancel</string>
+    <string name="edit_word_title">Edit Word</string>
 </resources>

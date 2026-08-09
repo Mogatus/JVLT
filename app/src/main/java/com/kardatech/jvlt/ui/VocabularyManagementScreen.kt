@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ fun VocabularyManagementScreen(
     val vocabulary by viewModel.filteredVocabulary.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var showAddDialog by remember { mutableStateOf(value = false) }
+    var editingItem by remember { mutableStateOf<VocabularyItem?>(value = null) }
 
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -39,13 +41,31 @@ fun VocabularyManagementScreen(
         uri?.let { viewModel.importCsv(context, it) }
     }
 
-    if (showAddDialog) {
-        AddWordDialog(
-            onDismiss = { showAddDialog = false },
-        ) { word, translation ->
-            viewModel.addWord(word, translation)
-            showAddDialog = false
-        }
+    if (showAddDialog || editingItem != null) {
+        VocabularyEditDialog(
+            viewModel = viewModel,
+            item = editingItem,
+            onDismiss = {
+                showAddDialog = false
+                editingItem = null
+            },
+            onConfirm = { word, translation, category, wordType ->
+                if (editingItem != null) {
+                    viewModel.updateWord(
+                        editingItem!!.copy(
+                            word = word,
+                            translation = translation,
+                            category = category,
+                            wordType = wordType
+                        )
+                    )
+                } else {
+                    viewModel.addWord(word, translation, category, wordType)
+                }
+                showAddDialog = false
+                editingItem = null
+            }
+        )
     }
 
     Scaffold(
@@ -105,10 +125,12 @@ fun VocabularyManagementScreen(
                     contentPadding = PaddingValues(all = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(space = 12.dp),
                 ) {
-                    items(items = vocabulary) { item ->
+                    items(items = vocabulary, key = { it.id }) { item ->
                         VocabularyManagementItem(
                             item = item,
-                        ) { viewModel.deleteItem(item) }
+                            onEdit = { editingItem = item },
+                            onDelete = { viewModel.deleteItem(item) }
+                        )
                     }
                 }
             }
@@ -116,17 +138,29 @@ fun VocabularyManagementScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddWordDialog(
+fun VocabularyEditDialog(
+    viewModel: VocabularyViewModel,
+    item: VocabularyItem? = null,
     onDismiss: () -> Unit,
-    onConfirm: (String, String) -> Unit,
+    onConfirm: (String, String, String, String) -> Unit,
 ) {
-    var word by remember { mutableStateOf(value = "") }
-    var translation by remember { mutableStateOf(value = "") }
+    var word by remember { mutableStateOf(value = item?.word ?: "") }
+    var translation by remember { mutableStateOf(value = item?.translation ?: "") }
+    var category by remember { mutableStateOf(value = item?.category ?: "") }
+    var wordType by remember { mutableStateOf(value = item?.wordType ?: viewModel.wordTypes.last()) }
+    var expanded by remember { mutableStateOf(value = false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(id = R.string.add_new_word_title)) },
+        title = { 
+            Text(
+                text = stringResource(
+                    id = if (item == null) R.string.add_new_word_title else R.string.edit_word_title
+                )
+            ) 
+        },
         text = {
             Column {
                 OutlinedTextField(
@@ -144,15 +178,60 @@ fun AddWordDialog(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(size = 12.dp),
                 )
+                Spacer(modifier = Modifier.height(height = 12.dp))
+                OutlinedTextField(
+                    value = category,
+                    onValueChange = { category = it },
+                    label = { Text(text = stringResource(id = R.string.category_label)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(size = 12.dp),
+                )
+                Spacer(modifier = Modifier.height(height = 12.dp))
+                
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded },
+                ) {
+                    OutlinedTextField(
+                        value = wordType,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text(text = stringResource(id = R.string.word_type_label)) },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier
+                            .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(size = 12.dp),
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        viewModel.wordTypes.forEach { type ->
+                            DropdownMenuItem(
+                                text = { Text(text = type) },
+                                onClick = {
+                                    wordType = type
+                                    expanded = false
+                                },
+                            )
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
             Button(
-                onClick = { onConfirm(word, translation) },
+                onClick = { onConfirm(word, translation, category, wordType) },
                 enabled = word.isNotBlank() && translation.isNotBlank(),
                 shape = RoundedCornerShape(size = 8.dp),
             ) {
-                Text(text = stringResource(id = R.string.add_button))
+                Text(
+                    text = stringResource(
+                        id = if (item == null) R.string.add_button else R.string.save_button
+                    )
+                )
             }
         },
         dismissButton = {
@@ -166,6 +245,7 @@ fun AddWordDialog(
 @Composable
 fun VocabularyManagementItem(
     item: VocabularyItem,
+    onEdit: () -> Unit,
     onDelete: () -> Unit,
 ) {
     ElevatedCard(
@@ -183,18 +263,56 @@ fun VocabularyManagementItem(
                 ) 
             },
             supportingContent = { 
-                Text(
-                    text = item.translation,
-                    color = MaterialTheme.colorScheme.primary,
-                ) 
+                Column {
+                    Text(
+                        text = item.translation,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    
+                    Spacer(modifier = Modifier.height(height = 4.dp))
+                    
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+                            shape = RoundedCornerShape(size = 4.dp),
+                        ) {
+                            Text(
+                                text = item.wordType,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            )
+                        }
+                        
+                        if (item.category.isNotEmpty()) {
+                            Spacer(modifier = Modifier.width(width = 8.dp))
+                            Text(
+                                text = stringResource(id = R.string.category_prefix, item.category),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.secondary,
+                                fontWeight = FontWeight.Medium,
+                            )
+                        }
+                    }
+                }
             },
             trailingContent = {
-                IconButton(onClick = onDelete) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(id = R.string.delete_button),
-                        tint = MaterialTheme.colorScheme.error,
-                    )
+                Row {
+                    IconButton(onClick = onEdit) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = stringResource(id = R.string.edit_word_title),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                    IconButton(onClick = onDelete) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = stringResource(id = R.string.delete_button),
+                            tint = MaterialTheme.colorScheme.error,
+                        )
+                    }
                 }
             },
             overlineContent = {

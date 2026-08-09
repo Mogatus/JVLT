@@ -14,14 +14,14 @@ import com.kardatech.jvlt.ui.AppScreen
 import com.kardatech.jvlt.ui.VocabularyManagementScreen
 import com.kardatech.jvlt.ui.VocabularyScreen
 import com.kardatech.jvlt.ui.VocabularyViewModel
-import com.kardatech.jvlt.ui.theme.JVLTTheme
+import com.kardatech.jvlt.ui.theme.VocalJetTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            JVLTTheme(dynamicColor = false) {
+            VocalJetTheme(dynamicColor = false) {
                 val viewModel: VocabularyViewModel = viewModel(factory = VocabularyViewModel.Factory)
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
