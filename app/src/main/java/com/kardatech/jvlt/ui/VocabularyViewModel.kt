@@ -139,10 +139,12 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
 
     fun loadRandomWord() {
         viewModelScope.launch {
+            val stagesList = filterStages.toList()
+            currentWord = null // Clear while loading
             val word = repository.getRandomItemFiltered(
                 language = currentLanguage,
                 category = filterCategory,
-                stages = filterStages.toList()
+                stages = stagesList
             )
             currentWord = word
             userTranslation = ""

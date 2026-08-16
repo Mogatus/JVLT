@@ -41,7 +41,7 @@ fun VocabularyManagementScreen(
         uri?.let { viewModel.importCsv(context, it) }
     }
 
-    if (showAddDialog || editingItem != null) {
+    if (showAddDialog || (editingItem != null)) {
         VocabularyEditDialog(
             viewModel = viewModel,
             item = editingItem,
@@ -56,15 +56,15 @@ fun VocabularyManagementScreen(
                             word = word,
                             translation = translation,
                             category = category,
-                            wordType = wordType
-                        )
+                            wordType = wordType,
+                        ),
                     )
                 } else {
                     viewModel.addWord(word, translation, category, wordType)
                 }
                 showAddDialog = false
                 editingItem = null
-            }
+            },
         )
     }
 
@@ -129,7 +129,7 @@ fun VocabularyManagementScreen(
                         VocabularyManagementItem(
                             item = item,
                             onEdit = { editingItem = item },
-                            onDelete = { viewModel.deleteItem(item) }
+                            onDelete = { viewModel.deleteItem(item) },
                         )
                     }
                 }
@@ -274,25 +274,32 @@ fun VocabularyManagementItem(
                     
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Surface(
-                            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+                            color = MaterialTheme.colorScheme.primaryContainer,
                             shape = RoundedCornerShape(size = 4.dp),
                         ) {
                             Text(
                                 text = item.wordType,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                fontWeight = FontWeight.Bold,
                             )
                         }
                         
                         if (item.category.isNotEmpty()) {
                             Spacer(modifier = Modifier.width(width = 8.dp))
-                            Text(
-                                text = stringResource(id = R.string.category_prefix, item.category),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.secondary,
-                                fontWeight = FontWeight.Medium,
-                            )
+                            Surface(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = RoundedCornerShape(size = 4.dp),
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.category_prefix, item.category),
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    fontWeight = FontWeight.Medium,
+                                )
+                            }
                         }
                     }
                 }

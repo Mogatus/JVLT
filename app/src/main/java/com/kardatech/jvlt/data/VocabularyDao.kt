@@ -13,7 +13,7 @@ interface VocabularyDao {
     @Query("SELECT * FROM vocabulary")
     fun getAllItems(): Flow<List<VocabularyItem>>
 
-    @Query("SELECT * FROM vocabulary WHERE language = :language")
+    @Query("SELECT * FROM vocabulary WHERE language = :language ORDER BY LOWER(word) ASC")
     fun getItemsByLanguage(language: String): Flow<List<VocabularyItem>>
 
     @Query("SELECT * FROM vocabulary WHERE id = :id")
