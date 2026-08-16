@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "VocalJet"
+rootProject.name = "VocJet"
 include(":app")

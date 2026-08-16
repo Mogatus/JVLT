@@ -1,0 +1,121 @@
+word,translation,language,stage,tries,category,wordType
+phenomenon,Phänomen,English,1,0,B2,Noun
+hypothesis,Hypothese,English,1,0,B2,Noun
+paradigm,Paradigma,English,1,0,B2,Noun
+implication,Auswirkung/Folgerung,English,1,0,B2,Noun
+distinction,Unterscheidung,English,1,0,B2,Noun
+correlation,Zusammenhang,English,1,0,B2,Noun
+consequence,Folge,English,1,0,B1,Noun
+interpretation,Interpretation,English,1,0,B2,Noun
+framework,Rahmenkonzept,English,1,0,B2,Noun
+justification,Begründung,English,1,0,B2,Noun
+validity,Gültigkeit,English,1,0,B2,Noun
+credibility,Glaubwürdigkeit,English,1,0,B2,Noun
+integrity,Integrität,English,1,0,B2,Noun
+prospect,Aussicht,English,1,0,B2,Noun
+constraint,Einschränkung,English,1,0,B2,Noun
+controversy,Kontroverse,English,1,0,B2,Noun
+discrepancy,Abweichung,English,1,0,B2,Noun
+inference,Schlussfolgerung,English,1,0,B2,Noun
+magnitude,Größenordnung,English,1,0,B2,Noun
+proportion,Anteil,English,1,0,B1,Noun
+retention,Beibehaltung,English,1,0,B2,Noun
+sustainability,Nachhaltigkeit,English,1,0,B2,Noun
+viability,Funktionsfähigkeit,English,1,0,B2,Noun
+commodity,Rohstoff/Ware,English,1,0,B2,Noun
+hierarchy,Hierarchie,English,1,0,B2,Noun
+incentive,Anreiz,English,1,0,B2,Noun
+legislation,Gesetzgebung,English,1,0,B2,Noun
+advocate,Befürworter,English,1,0,B2,Noun
+scholar,Gelehrter,English,1,0,B2,Noun
+manuscript,Manuskript,English,1,0,B2,Noun
+narrative,Erzählung,English,1,0,B1,Noun
+metaphor,Metapher,English,1,0,B1,Noun
+discourse,Diskurs,English,1,0,B2,Noun
+artifact,Artefakt,English,1,0,B2,Noun
+sediment,Sediment,English,1,0,B2,Noun
+erosion,Erosion,English,1,0,B2,Noun
+glacier,Gletscher,English,1,0,B1,Noun
+tectonics,Tektonik,English,1,0,B2,Noun
+predator,Raubtier,English,1,0,B1,Noun
+prey,Beute,English,1,0,B1,Noun
+symbiosis,Symbiose,English,1,0,B2,Noun
+enzyme,Enzym,English,1,0,B2,Noun
+metabolism,Stoffwechsel,English,1,0,B2,Noun
+neuron,Neuron,English,1,0,B2,Noun
+cognition,Kognition,English,1,0,B2,Noun
+perception,Wahrnehmung,English,1,0,B2,Noun
+stimulus,Reiz,English,1,0,B2,Noun
+heritage,Erbe,English,1,0,B1,Noun
+migration,Wanderung,English,1,0,B1,Noun
+urbanization,Urbanisierung,English,1,0,B2,Noun
+fertility,Fruchtbarkeit,English,1,0,B2,Noun
+mortality,Sterblichkeit,English,1,0,B2,Noun
+
+to accumulate,ansammeln,English,1,0,B2,Verb
+to allocate,zuweisen,English,1,0,B2,Verb
+to anticipate,erwarten,English,1,0,B2,Verb
+to assert,behaupten,English,1,0,B2,Verb
+to attain,erreichen,English,1,0,B2,Verb
+to cease,aufhören,English,1,0,B2,Verb
+to commence,beginnen,English,1,0,B2,Verb
+to compile,zusammentragen,English,1,0,B2,Verb
+to conceive,ausdenken,English,1,0,B2,Verb
+to deduce,ableiten,English,1,0,B2,Verb
+to diminish,vermindern,English,1,0,B2,Verb
+to distort,verzerren,English,1,0,B2,Verb
+to emerge,auftauchen,English,1,0,B1,Verb
+to entail,beinhalten,English,1,0,B2,Verb
+to establish,festlegen,English,1,0,B1,Verb
+to fluctuate,schwanken,English,1,0,B2,Verb
+to infer,schließen,English,1,0,B2,Verb
+to inhibit,hemmen,English,1,0,B2,Verb
+to integrate,integrieren,English,1,0,B2,Verb
+to invoke,aufrufen,English,1,0,B2,Verb
+to justify,rechtfertigen,English,1,0,B2,Verb
+to modify,modifizieren,English,1,0,B1,Verb
+to obtain,erhalten,English,1,0,B1,Verb
+to perceive,wahrnehmen,English,1,0,B2,Verb
+to persist,fortbestehen,English,1,0,B2,Verb
+to precede,vorausgehen,English,1,0,B2,Verb
+to refine,verfeinern,English,1,0,B2,Verb
+to reinforce,verstärken,English,1,0,B2,Verb
+to resolve,lösen,English,1,0,B1,Verb
+to retain,behalten,English,1,0,B2,Verb
+to revise,überarbeiten,English,1,0,B2,Verb
+to simulate,simulieren,English,1,0,B2,Verb
+to specify,spezifizieren,English,1,0,B2,Verb
+to subordinate,unterordnen,English,1,0,B2,Verb
+to supplement,ergänzen,English,1,0,B2,Verb
+to trigger,auslösen,English,1,0,B2,Verb
+to undergo,durchlaufen,English,1,0,B2,Verb
+to utilize,nutzen,English,1,0,B2,Verb
+
+subsequent,anschließend,English,1,0,B2,Adjective
+contemporary,zeitgenössisch,English,1,0,B2,Adjective
+crucial,entscheidend,English,1,0,B2,Adjective
+feasible,machbar,English,1,0,B2,Adjective
+inherent,innewohnend,English,1,0,B2,Adjective
+intrinsic,innerlich,English,1,0,B2,Adjective
+notable,bemerkenswert,English,1,0,B2,Adjective
+preliminary,vorläufig,English,1,0,B2,Adjective
+prominent,hervorragend,English,1,0,B2,Adjective
+rigid,starr,English,1,0,B2,Adjective
+robust,robust,English,1,0,B2,Adjective
+scarce,knapp,English,1,0,B2,Adjective
+subtle,fein/nuanciert,English,1,0,B2,Adjective
+successive,aufeinanderfolgend,English,1,0,B2,Adjective
+tentative,vorläufig/zögerlich,English,1,0,B2,Adjective
+ultimate,endgültig,English,1,0,B2,Adjective
+widespread,verbreitet,English,1,0,B2,Adjective
+
+consequently,folglich,English,1,0,B2,Adverb
+predominantly,überwiegend,English,1,0,B2,Adverb
+inevitably,unvermeidlich,English,1,0,B2,Adverb
+explicitly,ausdrücklich,English,1,0,B2,Adverb
+implicitly,stillschweigend,English,1,0,B2,Adverb
+fundamentally,grundlegend,English,1,0,B2,Adverb
+notably,bemerkenswerterweise,English,1,0,B2,Adverb
+presumably,vermutlich,English,1,0,B2,Adverb
+simultaneously,gleichzeitig,English,1,0,B2,Adverb
+subsequently,anschließend,English,1,0,B2,Adverb

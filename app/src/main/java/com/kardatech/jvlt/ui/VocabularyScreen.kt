@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kardatech.jvlt.R
-import com.kardatech.jvlt.data.PhaseStat
+import com.kardatech.jvlt.data.TriesStat
 import com.kardatech.jvlt.data.VocabularyItem
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -39,7 +39,7 @@ fun VocabularyScreen(
 ) {
     val currentWord = viewModel.currentWord
     val availableLanguages by viewModel.availableLanguages.collectAsStateWithLifecycle()
-    val phaseStats by viewModel.phaseStatistics.collectAsStateWithLifecycle()
+    val triesStats by viewModel.triesStatistics.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf(value = false) }
 
     Scaffold(
@@ -199,7 +199,7 @@ fun VocabularyScreen(
                             Spacer(modifier = Modifier.width(width = 8.dp))
                             AssistChip(
                                 onClick = { },
-                                label = { Text(text = stringResource(id = R.string.phase_label, currentWord.phase)) },
+                                label = { Text(text = stringResource(id = R.string.phase_label, currentWord.tries)) },
                                 shape = RoundedCornerShape(size = 8.dp),
                             )
                         }
@@ -220,7 +220,7 @@ fun VocabularyScreen(
                 sessionTotal = viewModel.sessionTotal,
                 sessionCorrect = viewModel.sessionCorrect,
                 sessionIncorrect = viewModel.sessionIncorrect,
-                phaseStats = phaseStats,
+                triesStats = triesStats,
             )
             
             Spacer(modifier = Modifier.height(height = 16.dp))
@@ -234,7 +234,7 @@ fun StatisticsSection(
     sessionTotal: Int,
     sessionCorrect: Int,
     sessionIncorrect: Int,
-    phaseStats: List<PhaseStat>,
+    triesStats: List<TriesStat>,
 ) {
     ElevatedCard(
         shape = RoundedCornerShape(size = 24.dp),
@@ -287,11 +287,11 @@ fun StatisticsSection(
                 horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(space = 8.dp),
             ) {
-                phaseStats.sortedBy { it.phase }.forEach { stat ->
+                triesStats.sortedBy { it.tries }.forEach { stat ->
                     AssistChip(
                         onClick = { },
                         label = {
-                            Text(text = stringResource(id = R.string.phase_stat_item, stat.phase, stat.count))
+                            Text(text = stringResource(id = R.string.phase_stat_item, stat.tries, stat.count))
                         },
                         colors = AssistChipDefaults.assistChipColors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f),

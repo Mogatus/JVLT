@@ -28,8 +28,8 @@ interface VocabularyDao {
     @Query("SELECT * FROM vocabulary WHERE language = :language ORDER BY RANDOM() LIMIT 1")
     suspend fun getRandomItem(language: String): VocabularyItem?
 
-    @Query("SELECT phase, COUNT(*) as count FROM vocabulary WHERE language = :language GROUP BY phase")
-    fun getPhaseStatistics(language: String): Flow<List<PhaseStat>>
+    @Query("SELECT tries, COUNT(*) as count FROM vocabulary WHERE language = :language GROUP BY tries")
+    fun getTriesStatistics(language: String): Flow<List<TriesStat>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: VocabularyItem)
@@ -44,7 +44,7 @@ interface VocabularyDao {
     suspend fun deleteAll()
 }
 
-data class PhaseStat(
-    val phase: Int,
+data class TriesStat(
+    val tries: Int,
     val count: Int,
 )

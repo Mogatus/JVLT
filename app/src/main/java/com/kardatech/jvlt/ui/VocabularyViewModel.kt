@@ -14,7 +14,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.kardatech.jvlt.JvltApplication
-import com.kardatech.jvlt.data.PhaseStat
+import com.kardatech.jvlt.data.TriesStat
 import com.kardatech.jvlt.data.VocabularyItem
 import com.kardatech.jvlt.data.VocabularyRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -58,9 +58,9 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
         )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val phaseStatistics: StateFlow<List<PhaseStat>> = snapshotFlow { currentLanguage }
+    val triesStatistics: StateFlow<List<TriesStat>> = snapshotFlow { currentLanguage }
         .flatMapLatest { language ->
-            repository.getPhaseStatsStream(language)
+            repository.getTriesStatsStream(language)
         }
         .stateIn(
             scope = viewModelScope,
@@ -106,31 +106,59 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
     fun loadRandomWord() {
         viewModelScope.launch {
             val word = repository.getRandomItem(currentLanguage)
-            if (word == null) {
-                val languages = availableLanguages.value
-                if (languages.isEmpty()) {
-                    seedInitialData()
-                } else {
-                    currentWord = null
-                }
-            } else {
-                currentWord = word
-                userTranslation = ""
-                isTranslationVisible = false
-            }
+            currentWord = word
+            userTranslation = ""
+            isTranslationVisible = false
         }
     }
 
-    private suspend fun seedInitialData() {
-        val initialWords = listOf(
-            VocabularyItem(word = "Apple", translation = "Apfel", language = "English", wordType = "Noun"),
-            VocabularyItem(word = "House", translation = "Haus", language = "English", wordType = "Noun"),
-            VocabularyItem(word = "Car", translation = "Auto", language = "English", wordType = "Noun"),
-            VocabularyItem(word = "Gato", translation = "Katze", language = "Spanish", wordType = "Noun"),
-            VocabularyItem(word = "Perro", translation = "Hund", language = "Spanish", wordType = "Noun"),
-        )
-        initialWords.forEach { repository.insertItem(it) }
-        loadRandomWord()
+    fun seedFromAssets(context: Context) {
+        viewModelScope.launch {
+            try {
+                // Check if any data already exists
+                val currentLanguages = repository.getLanguagesStream().stateIn(viewModelScope).value
+                if (currentLanguages.isNotEmpty()) return@launch
+
+                context.assets.open("initial_vocabulary.csv").use { inputStream ->
+                    BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                        var currentLine = reader.readLine()
+                        while (currentLine != null) {
+                            val parts = currentLine.split(";")
+                            if (parts.size >= 3) {
+                                val word = parts[0].trim()
+                                val translation = parts[1].trim()
+                                val language = parts[2].trim()
+                                val stage = if (parts.size >= 4) parts[3].trim().toIntOrNull() ?: 1 else 1
+                                val tries = if (parts.size >= 5) parts[4].trim().toIntOrNull() ?: 0 else 0
+                                val category = if (parts.size >= 6) parts[5].trim() else ""
+                                val wordType = if (parts.size >= 7) parts[6].trim() else "Other"
+
+                                if (word.isNotEmpty() && translation.isNotEmpty() && language.isNotEmpty()) {
+                                    val existing = repository.getItemByWordAndLanguage(word, language)
+                                    if (existing == null) {
+                                        repository.insertItem(
+                                            VocabularyItem(
+                                                word = word,
+                                                translation = translation,
+                                                language = language,
+                                                stage = stage,
+                                                tries = tries,
+                                                category = category,
+                                                wordType = wordType,
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                            currentLine = reader.readLine()
+                        }
+                    }
+                }
+                loadRandomWord()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun checkTranslation() {
@@ -140,11 +168,11 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
     fun onSwipeRight() {
         currentWord?.let {
             val nextStage = if (it.stage < 7) it.stage + 1 else 7
-            val nextPhase = it.phase + 1
+            val nextTries = it.tries + 1
             sessionTotal++
             sessionCorrect++
             viewModelScope.launch {
-                repository.updateItem(it.copy(stage = nextStage, phase = nextPhase))
+                repository.updateItem(it.copy(stage = nextStage, tries = nextTries))
                 loadRandomWord()
             }
         }
@@ -153,10 +181,11 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
     fun onSwipeLeft() {
         currentWord?.let {
             val nextStage = if (it.stage > 1) it.stage - 1 else 1
+            val nextTries = it.tries + 1
             sessionTotal++
             sessionIncorrect++
             viewModelScope.launch {
-                repository.updateItem(it.copy(stage = nextStage))
+                repository.updateItem(it.copy(stage = nextStage, tries = nextTries))
                 loadRandomWord()
             }
         }

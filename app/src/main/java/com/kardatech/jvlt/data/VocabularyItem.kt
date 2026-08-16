@@ -14,7 +14,7 @@ data class VocabularyItem(
     val translation: String,
     val language: String,
     val stage: Int = 1,
-    val phase: Int = 0,
+    val tries: Int = 0,
     val category: String = "",
     val wordType: String = "Other",
 )

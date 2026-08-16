@@ -317,7 +317,7 @@ fun VocabularyManagementItem(
             },
             overlineContent = {
                 Text(
-                    text = stringResource(id = R.string.item_stat_overline, item.stage, item.phase),
+                    text = stringResource(id = R.string.item_stat_overline, item.stage, item.tries),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline,
                 )

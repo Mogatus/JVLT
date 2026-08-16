@@ -1,0 +1,139 @@
+research;Forschung;English;1;0;B2;Noun
+analysis;Analyse;English;1;0;B2;Noun
+evidence;Beweis;English;1;0;B2;Noun
+environment;Umwelt;English;1;0;B1;Noun
+population;Bevölkerung;English;1;0;B1;Noun
+species;Art (Biologie);English;1;0;B2;Noun
+impact;Auswirkung;English;1;0;B2;Noun
+structure;Struktur;English;1;0;B1;Noun
+process;Prozess;English;1;0;B1;Noun
+context;Kontext;English;1;0;B2;Noun
+concept;Konzept;English;1;0;B2;Noun
+method;Methode;English;1;0;B1;Noun
+approach;Ansatz;English;1;0;B2;Noun
+issue;Thema/Problem;English;1;0;B1;Noun
+factor;Faktor;English;1;0;B2;Noun
+function;Funktion;English;1;0;B2;Noun
+role;Rolle;English;1;0;B1;Noun
+source;Quelle;English;1;0;B1;Noun
+theory;Theorie;English;1;0;B2;Noun
+evolution;Evolution;English;1;0;B2;Noun
+variation;Variation;English;1;0;B2;Noun
+distribution;Verteilung;English;1;0;B2;Noun
+range;Spanne;English;1;0;B1;Noun
+region;Region;English;1;0;B1;Noun
+cycle;Zyklus;English;1;0;B1;Noun
+habitat;Habitat;English;1;0;B2;Noun
+migration;Wanderung;English;1;0;B2;Noun
+behavior;Verhalten;English;1;0;B1;Noun
+pattern;Muster;English;1;0;B1;Noun
+reaction;Reaktion;English;1;0;B2;Noun
+energy;Energie;English;1;0;B1;Noun
+chemical;Chemikalie;English;1;0;B1;Noun
+surface;Oberfläche;English;1;0;B1;Noun
+material;Material;English;1;0;B1;Noun
+element;Element;English;1;0;B1;Noun
+atom;Atom;English;1;0;B2;Noun
+cell;Zelle;English;1;0;B1;Noun
+organism;Organismus;English;1;0;B2;Noun
+community;Gemeinschaft;English;1;0;B1;Noun
+ecosystem;Ökosystem;English;1;0;B2;Noun
+climate;Klima;English;1;0;B1;Noun
+temperature;Temperatur;English;1;0;A2;Noun
+pressure;Druck;English;1;0;B1;Noun
+density;Dichte;English;1;0;B2;Noun
+volume;Volumen;English;1;0;B1;Noun
+mass;Masse;English;1;0;B1;Noun
+gravity;Schwerkraft;English;1;0;B2;Noun
+force;Kraft;English;1;0;B1;Noun
+motion;Bewegung;English;1;0;B1;Noun
+speed;Geschwindigkeit;English;1;0;A2;Noun
+distance;Entfernung;English;1;0;A2;Noun
+direction;Richtung;English;1;0;A2;Noun
+lecture;Vorlesung;English;1;0;B1;Noun
+assignment;Aufgabe;English;1;0;B1;Noun
+deadline;Frist;English;1;0;B1;Noun
+campus;Campus;English;1;0;B1;Noun
+department;Fachbereich;English;1;0;B1;Noun
+advisor;Berater;English;1;0;B2;Noun
+scholarship;Stipendium;English;1;0;B2;Noun
+tuition;Studiengebühren;English;1;0;B2;Noun
+degree;Abschluss;English;1;0;B1;Noun
+major;Hauptfach;English;1;0;B1;Noun
+minor;Nebenfach;English;1;0;B1;Noun
+experiment;Experiment;English;1;0;B1;Noun
+hypothesis;Hypothese;English;1;0;B2;Noun
+data;Daten;English;1;0;B1;Noun
+sample;Probe;English;1;0;B1;Noun
+survey;Umfrage;English;1;0;B2;Noun
+interview;Interview;English;1;0;B1;Noun
+argument;Argument;English;1;0;B1;Noun
+claim;Behauptung;English;1;0;B2;Noun
+summary;Zusammenfassung;English;1;0;B1;Noun
+topic;Thema;English;1;0;B1;Noun
+purpose;Zweck;English;1;0;B1;Noun
+audience;Publikum;English;1;0;B1;Noun
+feature;Merkmal;English;1;0;B2;Noun
+benefit;Vorteil;English;1;0;B1;Noun
+challenge;Herausforderung;English;1;0;B1;Noun
+solution;Lösung;English;1;0;B1;Noun
+trend;Trend;English;1;0;B2;Noun
+technology;Technologie;English;1;0;B1;Noun
+device;Gerät;English;1;0;B2;Noun
+machine;Maschine;English;1;0;A2;Noun
+system;System;English;1;0;B1;Noun
+network;Netzwerk;English;1;0;B1;Noun
+transportation;Transport;English;1;0;B1;Noun
+industry;Industrie;English;1;0;B1;Noun
+economy;Wirtschaft;English;1;0;B1;Noun
+market;Markt;English;1;0;B1;Noun
+resource;Ressource;English;1;0;B1;Noun
+production;Produktion;English;1;0;B1;Noun
+consumption;Konsum;English;1;0;B2;Noun
+investment;Investition;English;1;0;B2;Noun
+policy;Politik/Regel;English;1;0;B2;Noun
+government;Regierung;English;1;0;B1;Noun
+law;Gesetz;English;1;0;B1;Noun
+culture;Kultur;English;1;0;B1;Noun
+tradition;Tradition;English;1;0;B1;Noun
+history;Geschichte;English;1;0;B1;Noun
+event;Ereignis;English;1;0;B1;Noun
+conflict;Konflikt;English;1;0;B2;Noun
+agreement;Einigung;English;1;0;B1;Noun
+relationship;Beziehung;English;1;0;B1;Noun
+communication;Kommunikation;English;1;0;B1;Noun
+ability;Fähigkeit;English;1;0;B1;Noun
+opportunity;Gelegenheit;English;1;0;B1;Noun
+risk;Risiko;English;1;0;B1;Noun
+advantage;Vorteil;English;1;0;B1;Noun
+disadvantage;Nachteil;English;1;0;B1;Noun
+goal;Ziel;English;1;0;B1;Noun
+result;Ergebnis;English;1;0;B1;Noun
+effect;Effekt;English;1;0;B1;Noun
+cause;Ursache;English;1;0;B1;Noun
+to analyze;analysieren;English;1;0;B2;Verb
+to compare;vergleichen;English;1;0;B1;Verb
+to contrast;gegenüberstellen;English;1;0;B2;Verb
+to evaluate;bewerten;English;1;0;B2;Verb
+to examine;untersuchen;English;1;0;B2;Verb
+to identify;identifizieren;English;1;0;B1;Verb
+to define;definieren;English;1;0;B1;Verb
+to describe;beschreiben;English;1;0;A2;Verb
+to explain;erklären;English;1;0;A2;Verb
+to illustrate;veranschaulichen;English;1;0;B2;Verb
+to demonstrate;zeigen/belegen;English;1;0;B2;Verb
+to support;unterstützen;English;1;0;B1;Verb
+to argue;argumentieren;English;1;0;B1;Verb
+to claim;behaupten;English;1;0;B2;Verb
+to suggest;vorschlagen;English;1;0;B1;Verb
+to propose;vorschlagen;English;1;0;B2;Verb
+to require;erfordern;English;1;0;B2;Verb
+to involve;beinhalten;English;1;0;B1;Verb
+to include;enthalten;English;1;0;A2;Verb
+to consist of;bestehen aus;English;1;0;B1;Verb
+to increase;steigen;English;1;0;B1;Verb
+to decrease;sinken;English;1;0;B1;Verb
+to maintain;aufrechterhalten;English;1;0;B2;Verb
+to reduce;reduzieren;English;1;0;B1;Verb
+to affect;beeinflussen;English;1;0;B2;Verb
+to impact;auswirken;English;1;0;B2;Verb
