@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.FlightTakeoff
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.*
@@ -39,8 +40,10 @@ fun VocabularyScreen(
 ) {
     val currentWord = viewModel.currentWord
     val availableLanguages by viewModel.availableLanguages.collectAsStateWithLifecycle()
+    val availableCategories by viewModel.availableCategories.collectAsStateWithLifecycle()
     val triesStats by viewModel.triesStatistics.collectAsStateWithLifecycle()
-    var expanded by remember { mutableStateOf(value = false) }
+    var expandedLanguage by remember { mutableStateOf(value = false) }
+    var expandedCategory by remember { mutableStateOf(value = false) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -103,14 +106,14 @@ fun VocabularyScreen(
                     )
 
                     ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded },
+                        expanded = expandedLanguage,
+                        onExpandedChange = { expandedLanguage = !expandedLanguage },
                     ) {
                         OutlinedTextField(
                             value = viewModel.currentLanguage,
                             onValueChange = {},
                             readOnly = true,
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedLanguage) },
                             modifier = Modifier
                                 .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable)
                                 .width(width = 160.dp),
@@ -119,15 +122,15 @@ fun VocabularyScreen(
                         )
 
                         ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
+                            expanded = expandedLanguage,
+                            onDismissRequest = { expandedLanguage = false },
                         ) {
                             availableLanguages.forEach { language ->
                                 DropdownMenuItem(
                                     text = { Text(text = language) },
                                     onClick = {
                                         viewModel.onLanguageSelected(language)
-                                        expanded = false
+                                        expandedLanguage = false
                                     },
                                 )
                             }
@@ -136,11 +139,104 @@ fun VocabularyScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(height = 24.dp))
+            Spacer(modifier = Modifier.height(height = 12.dp))
+
+            // Filter Options Card
+            ElevatedCard(
+                shape = RoundedCornerShape(size = 16.dp),
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                ),
+            ) {
+                Column(modifier = Modifier.padding(all = 12.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.FilterAlt,
+                            contentDescription = null,
+                            modifier = Modifier.size(size = 18.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(width = 8.dp))
+                        Text(
+                            text = stringResource(id = R.string.filter_options),
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(height = 8.dp))
+                    
+                    // Category Filter
+                    ExposedDropdownMenuBox(
+                        expanded = expandedCategory,
+                        onExpandedChange = { expandedCategory = !expandedCategory },
+                    ) {
+                        OutlinedTextField(
+                            value = viewModel.filterCategory ?: stringResource(id = R.string.all_categories),
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text(text = "Category") },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCategory) },
+                            modifier = Modifier
+                                .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable)
+                                .fillMaxWidth(),
+                            textStyle = MaterialTheme.typography.bodySmall,
+                            shape = RoundedCornerShape(size = 12.dp),
+                        )
+
+                        ExposedDropdownMenu(
+                            expanded = expandedCategory,
+                            onDismissRequest = { expandedCategory = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.all_categories)) },
+                                onClick = {
+                                    viewModel.onFilterCategorySelected(category = null)
+                                    expandedCategory = false
+                                },
+                            )
+                            availableCategories.forEach { category ->
+                                DropdownMenuItem(
+                                    text = { Text(text = category) },
+                                    onClick = {
+                                        viewModel.onFilterCategorySelected(category = category)
+                                        expandedCategory = false
+                                    },
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(height = 12.dp))
+
+                    // Stage Filter
+                    Text(
+                        text = stringResource(id = R.string.filter_by_stage),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        (1..7).forEach { stage ->
+                            FilterChip(
+                                selected = viewModel.filterStages.contains(stage),
+                                onClick = { viewModel.toggleFilterStage(stage = stage) },
+                                label = { Text(text = stage.toString()) },
+                                shape = RoundedCornerShape(size = 8.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(height = 12.dp))
 
             // Main Learning Area
             Box(
-                modifier = Modifier.padding(vertical = 24.dp),
+                modifier = Modifier.padding(vertical = 12.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 if (currentWord != null) {

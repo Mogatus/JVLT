@@ -43,6 +43,9 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
     var currentLanguage by mutableStateOf(value = "English")
         private set
 
+    var filterCategory by mutableStateOf<String?>(value = null)
+    var filterStages by mutableStateOf(value = setOf(1, 2, 3, 4, 5, 6, 7))
+
     var sessionTotal by mutableIntStateOf(value = 0)
         private set
     var sessionCorrect by mutableIntStateOf(value = 0)
@@ -51,6 +54,17 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
         private set
 
     val availableLanguages: StateFlow<List<String>> = repository.getLanguagesStream()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
+            initialValue = emptyList(),
+        )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val availableCategories: StateFlow<List<String>> = snapshotFlow { currentLanguage }
+        .flatMapLatest { language ->
+            repository.getCategoriesStream(language)
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
@@ -97,15 +111,39 @@ class VocabularyViewModel(private val repository: VocabularyRepository) : ViewMo
 
     fun onLanguageSelected(language: String) {
         currentLanguage = language
+        filterCategory = null
+        filterStages = setOf(1, 2, 3, 4, 5, 6, 7)
         sessionTotal = 0
         sessionCorrect = 0
         sessionIncorrect = 0
         loadRandomWord()
     }
 
+    fun toggleFilterStage(stage: Int) {
+        val newStages = filterStages.toMutableSet()
+        if (newStages.contains(stage)) {
+            if (newStages.size > 1) { // Don't allow empty stages
+                newStages.remove(stage)
+            }
+        } else {
+            newStages.add(stage)
+        }
+        filterStages = newStages
+        loadRandomWord()
+    }
+
+    fun onFilterCategorySelected(category: String?) {
+        filterCategory = category
+        loadRandomWord()
+    }
+
     fun loadRandomWord() {
         viewModelScope.launch {
-            val word = repository.getRandomItem(currentLanguage)
+            val word = repository.getRandomItemFiltered(
+                language = currentLanguage,
+                category = filterCategory,
+                stages = filterStages.toList()
+            )
             currentWord = word
             userTranslation = ""
             isTranslationVisible = false

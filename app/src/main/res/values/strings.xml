@@ -15,6 +15,9 @@
     <string name="phase_stat_item">Tries %1$d: %2$d words</string>
 
     <string name="manage_language_title">Manage %1$s</string>
+    <string name="filter_options">Filter Options</string>
+    <string name="all_categories">All Categories</string>
+    <string name="filter_by_stage">Filter by Stage</string>
     <string name="back_button">Back</string>
     <string name="import_csv">Import CSV</string>
     <string name="add_word">Add Word</string>

@@ -25,6 +25,12 @@ interface VocabularyDao {
     @Query("SELECT DISTINCT language FROM vocabulary")
     fun getLanguages(): Flow<List<String>>
 
+    @Query("SELECT DISTINCT category FROM vocabulary WHERE language = :language AND category != ''")
+    fun getCategories(language: String): Flow<List<String>>
+
+    @Query("SELECT * FROM vocabulary WHERE language = :language AND (:category IS NULL OR category = :category) AND stage IN (:stages) ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomItemFiltered(language: String, category: String?, stages: List<Int>): VocabularyItem?
+
     @Query("SELECT * FROM vocabulary WHERE language = :language ORDER BY RANDOM() LIMIT 1")
     suspend fun getRandomItem(language: String): VocabularyItem?
 
